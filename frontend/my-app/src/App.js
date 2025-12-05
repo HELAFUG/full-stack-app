@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import TodoForm from './components/TodoForm';
+import { createTodo } from './api';
 
-function App() {
-    const [healthStatus, setHealthStatus] = useState(null);
-    const [error, setError] = useState(null);
+const App = () => {
+    const [message, setMessage] = useState('');
 
-    const checkHealth = () => {
-        axios.get('http://127.0.0.1:8080/api/healthchecker')
-            .then(response => {
-                setHealthStatus(response.data.json);
-                setError(null);
-            })
-            .catch(err => {
-                setError("Failed to reach the server");
-                setHealthStatus(null);
-            });
+    const handleAdd = async (newTodo) => {
+        try {
+            await createTodo(newTodo);
+            setMessage('To-Do item added successfully!');
+        } catch (error) {
+            console.error('Error creating todo:', error);
+            setMessage('Failed to add To-Do item.');
+        }
     };
 
     return (
         <div style={{ padding: '20px' }}>
-            <h1>Health Check</h1>
-            <button onClick={checkHealth}>Check Health</button>
-            {healthStatus && <p>Status: {healthStatus}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            <h1>Create To-Do Item</h1>
+            <TodoForm onAdd={handleAdd} />
+            {message && <p>{message}</p>}
         </div>
     );
-}
+};
 
 export default App;
