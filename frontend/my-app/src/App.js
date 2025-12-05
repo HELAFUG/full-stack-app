@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [healthStatus, setHealthStatus] = useState(null);
+    const [error, setError] = useState(null);
+
+    const checkHealth = () => {
+        axios.get('http://127.0.0.1:8080/api/healthchecker')
+            .then(response => {
+                setHealthStatus(response.data.json);
+                setError(null);
+            })
+            .catch(err => {
+                setError("Failed to reach the server");
+                setHealthStatus(null);
+            });
+    };
+
+    return (
+        <div style={{ padding: '20px' }}>
+            <h1>Health Check</h1>
+            <button onClick={checkHealth}>Check Health</button>
+            {healthStatus && <p>Status: {healthStatus}</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+        </div>
+    );
 }
 
 export default App;
