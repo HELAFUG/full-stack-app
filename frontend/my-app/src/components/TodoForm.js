@@ -1,0 +1,38 @@
+import React , { useState } from "react";
+
+const FormTodo = ({onAdd}) => {
+    const [title] = useState('');
+    const [description] = useState(''); 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (title && description) {
+            onAdd({ title, description });
+            setTitle('');
+            setDescription('');
+        }
+    };
+     return (
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+            />
+            <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description"
+            />
+            <button type="submit">Add</button>
+        </form>
+    );
+
+
+
+
+};
+
+
+export default TodoForm;
