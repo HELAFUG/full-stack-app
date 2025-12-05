@@ -24,6 +24,7 @@ class APIConfig(BaseModel):
 class SRVConfig(BaseModel):
     host: str = "0.0.0.0"
     port: int = 8080
+    reload_on_change: bool = True
 
 
 class Settings(BaseSettings):
