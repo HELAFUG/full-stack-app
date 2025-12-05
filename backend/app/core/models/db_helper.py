@@ -11,7 +11,7 @@ class DBHelper:
         )
 
         self.session_factory = async_sessionmaker(
-            engine=self.engine,
+            bind=self.engine,
             expire_on_commit=False,
             autoflush=False,
             autocommit=False,
